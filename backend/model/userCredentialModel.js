@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const userCredential = mongoose.Schema({
-    fname: String,
-    lname: String,
-    username: String,
+    name: String,
     email: String,
     password: String,
+    phone:Number,
     image: String,
     createdAt:{
         type: Date,

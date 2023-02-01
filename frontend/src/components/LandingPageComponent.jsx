@@ -81,7 +81,7 @@ function LandingPageComponent() {
           <li>
             <button type="button" onClick={handleLogin} className="je2-user-controls__account js-account" aria-haspopup="true" aria-expanded="false">
               <span className="je2-notification-circle js-notification-circle "/>
-              <p>Sign up</p>
+              <p>Log In</p>
             </button>
           </li>
           <nav className="je2-account-dropdown js-account-dropdown _v2 _hidden _empty" style={{height: '216px'}}>

@@ -1,42 +1,57 @@
 const UserCredential = require("../model/userCredentialModel");
 const jwt  = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs');
+const { otpVerify } = require("../verify/otp");
 
 const usersignUp = async (req, res) => {
     console.log('kkkk',req.body);
-    let { fname, lname, username, email, password } = req.body;
-    password = await bcrypt.hash(password, 10);
-    if(email!=null){
-        console.log('hiiihiiihiiihiihi');
-    }
+    let { name, email, password,phone } =await req.body;
+    console.log(req.body.phone,req.body.otp);
+    // return new Promise((resolve, reject) => {
+        otpVerify(req.body.otp,req.body.phone).then(async(resp)=>{
+            console.log('sdd===>>',res);
+            if (resp){
+                console.log('res is true')
+                const newUser = new UserCredential({
+                    name,
+                    email,
+                    password,
+                    phone
+                })
+                await newUser.save();
+                res.json({ status: "success" });
 
-    const newUser = new UserCredential({
-        fname,
-        lname,
-        username,
-        email,
-        password
-    })
-    try {
-        if(!username&&!fname&&!email){
+            }
+            else{
+                console.log('res is false')
+                res.json({ status: "failure" });
+            }
+        })
+    // })
+    const validPassword = await bcryptjs.compare('kk',req.body.password);
+    console.log(validPassword);
+
+
+    // try {
+    //     if(!username&&!fname&&!email){
             
-            res.json({data:"no user"})
-        }
-        else{
-            await newUser.save();
-        console.log("vjhdvchj");
-        const token = jwt.sign({
-            email: email
-        },
-        'secret123'
-        )
-        console.log("vjhdvchj");
-        res.status(201).json({newUser,token});
-        }
+    //         res.json({data:"no user"})
+    //     }
+    //     else{
+    //         await newUser.save();
+    //     console.log("vjhdvchj");
+    //     const token = jwt.sign({
+    //         email: email
+    //     },
+    //     'secret123'
+    //     )
+    //     console.log("vjhdvchj");
+    //     res.status(201).json({newUser,token});
+    //     }
         
-    } catch (error) {
-        res.status(409).json({ message: error.message })
-    }
+    // } catch (error) {
+    //     res.status(409).json({ message: error.message })
+    // }
 }
 
 const userlogin = async (req, res) => {

@@ -17,7 +17,7 @@ db(()=>{
     try {
         console.log("DataBase Successfully Connected");        
     } catch (error) {
-        console.log("Database Not Connected : ", error);        
+        console.log("Database Not Connected : ", error);    
     }
 });
 
@@ -25,8 +25,8 @@ db(()=>{
 //     res.json({ message: "Hello from server!" });
 //   });
 
-app.use(express.json({limit: '50mb'}));
-app.use('/user',userrouter);
+app.use(express.json());
+app.use('/',userrouter);
 app.use('/admin',adminrouter);
 
 

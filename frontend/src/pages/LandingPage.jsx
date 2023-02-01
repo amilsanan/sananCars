@@ -6,7 +6,8 @@ function LandingPage() {
   return (
     <div>
     
-       <LandingPageComponent/>
+       <LandingPageComponent/>  
+            
        
     </div>
   )
