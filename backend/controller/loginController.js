@@ -7,7 +7,8 @@ const usersignUp = async (req, res) => {
     console.log('kkkk',req.body);
     let { name, email, password,phone } =await req.body;
     console.log(req.body.phone,req.body.otp);
-    // return new Promise((resolve, reject) => {
+    // const validPassword = await bcryptjs.compare('kk',req.body.password);
+    // console.log('valis=',validPassword);
         otpVerify(req.body.otp,req.body.phone).then(async(resp)=>{
             console.log('sdd===>>',res);
             if (resp){
@@ -27,9 +28,8 @@ const usersignUp = async (req, res) => {
                 res.json({ status: "failure" });
             }
         })
-    // })
-    const validPassword = await bcryptjs.compare('kk',req.body.password);
-    console.log(validPassword);
+
+    
 
 
     // try {
@@ -55,24 +55,28 @@ const usersignUp = async (req, res) => {
 }
 
 const userlogin = async (req, res) => {
-    console.log(req.body);
+    console.log('req==>',req.body);
+    
     let { email, password } = req.body;
-     password = await bcrypt.hash(password,10)
+     console.log('psaa',password);
     try {
         const user = await UserCredential.findOne({ email: email });
-        console.log("server", user);
+        console.log("server", user.password);
         if (user) {
-            const validPassword = await bcrypt.compare(password, user.password);
+            console.log('hi');
+            const validPassword = await bcryptjs.compare(password,user.password);
+             console.log('valis=',validPassword);
             if (validPassword) {
                 console.log("Correct Password",user);
-                const token = jwt.sign({
-                    id: user._id,
-                    email: user.email
-                },
-                'secret123'
-                )
-                res.status(201).json({user,token});
+                // const token = jwt.sign({
+                //     id: user._id,
+                //     email: user.email
+                // },
+                // 'secret123'
+                // )
+                res.status(201).json({status:true});
             } else {
+                res.json({status:false})
                 console.log("Password Wrong");
             }
         } else {
