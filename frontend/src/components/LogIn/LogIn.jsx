@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { GoogleLogin } from '@react-oauth/google';
@@ -43,6 +43,7 @@ useEffect(
               })
               .then((res) => {
                   console.log('poo',res);
+                  navigate('/')
               })
               .catch((err) => console.log(err));
       }
@@ -106,7 +107,7 @@ useEffect(
                 </button>
               </div>
               <div className="je2-sign-up-dialog__content__label">
-                <a className="js-reset-pass">Forgot password?</a>
+                <a onClick={()=>navigate('/forgetPassword')} className="js-reset-pass">Forgot password?</a>
               </div>
             </form> </div>
 

@@ -14,6 +14,9 @@ function ForgetPassword() {
     const [isVisibleVerifybtn, setIsVisibleVerifybtn] = useState(false);
     const [isVisiblepass, setIsVisiblepass] = useState(false);
     const [inputOtp, setInputOtp] = useState("");
+    const [phone, setPhone] = useState();
+    const [otpNo, setOtpNo] = useState();
+    const [newPass, setNewPass] = useState();
   
     const handleChange = (event) => {
       
@@ -22,16 +25,34 @@ function ForgetPassword() {
         setIsVisibleotp(false)
         setIsVisibleVerify(true)
         setIsVisibleVerifybtn(true)
-
-     
+        let num={number:phone}  
+         console.log(num);
+         axios.post('http://localhost:5000/otp',num).then((res)=>console.log(res)).catch((err)=>console.log('err=',err))
+         
+        }
+        
+        const pass = (number)=>{
+          setIsVisibleVerifybtn(false)
+         
+          let data={number:phone,otp:otpNo} 
+          axios.post('http://localhost:5000/otpVerifys',data).then((res)=>{
+            console.log('kljj',res);
+            if(res){
+              setIsVisiblepass(true)
+            }else{
+              alert('wrong otp')
+            }
+          }).catch((err)=>console.log('err=',err))
+                
     }
-
-    const pass = (number)=>{
-        setIsVisibleVerifybtn(false)
-        setIsVisiblepass(true)
+    const onSubmit =async () => { 
       
-    }
-    const onSubmit =async (data) => { 
+      const saltRounds = 10;
+      const hashedPassword = await bcryptjs.hash(newPass, saltRounds);    
+      let h={phoneNo:phone,password:hashedPassword}
+      axios.post('http://localhost:5000/updatePass',h).then((res)=>console.log(res)).catch((err)=>console.log('err=',err))
+      console.log();
+      console.log(newPass);
      
     };
 
@@ -52,7 +73,7 @@ function ForgetPassword() {
               
               
                 <div className="je2-sign-up-dialog__content-form__field">
-                  <input  className="je2-input" type="number" placeholder="Phone" name="phone" required />
+                  <input  className="je2-input" onChange={(e)=>setPhone(e.target.value)} type="number" placeholder="Phone" name="phone" required />
                   <div className="js-error-message _hidden">
                   </div>
                 </div> 
@@ -69,7 +90,7 @@ function ForgetPassword() {
 
                 {isVisibleVerify && (
                   <div className="je2-sign-up-dialog__content-form__field">
-                  <input type="number"  className="je2-input"  placeholder="otp" name="otp" required />
+                  <input type="number"  className="je2-input" onChange={(e)=>setOtpNo(e.target.value)} placeholder="otp" name="otp" required />
                   <div className="js-error-message _hidden">
                   </div>
                 </div>  )}
@@ -83,14 +104,13 @@ function ForgetPassword() {
                     </span>
                   </button>
                 </div>)}
-
                 {isVisiblepass && (                   
                 <div className="je2-sign-up-dialog__content-form__continue">
-                <input  className="je2-input" type="text" placeholder="new password" name="phone" required />
+                <input  className="je2-input" type="text" onChange={(e)=>setNewPass(e.target.value)} placeholder="new password" name="password" required />
 
                   <div className="je3-spinner">
                   </div>
-                  <button type='submit' className="je2-button _black js-save">
+                  <button  onClick={onSubmit} className="je2-button _black js-save">
                     <span>
                       Change password
                     </span>

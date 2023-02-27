@@ -10,6 +10,20 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const updatePassword = async (req, res) => {
+    console.log("Hi", req.body)
+    try {
+    const filter = { phone: req.body.phoneNo };
+    const update = { $set: { password: req.body.password} }; // Replace with actual field and value to update
+
+        // await UserCredential.find({phone:req.body.n}) .then((response) => {
+        await UserCredential.updateMany(filter, update) .then((response) => {
+            res.send(response)
+        })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 const deleteUser = async (req, res) => {
     console.log("Hi", req.query.id);
     const userID = req.query.id;
@@ -60,5 +74,5 @@ module.exports = {
     getAllUsers,
     deleteUser,
     getUserDetails,
-    getEditProfile
+    getEditProfile,updatePassword
 }

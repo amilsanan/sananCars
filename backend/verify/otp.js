@@ -20,25 +20,44 @@ const servicesId=process.env.TWILIO_SERVICESID
             })
         })
     }
-   const otpVerify = (otp,number)=>{
-    console.log('asd',otp,number);
+   const otpVerify = (otpData,number)=>{
+    console.log('asd',otpData,number);
         let response
         return new Promise((resolve, reject) => {
             client.verify.services(servicesId).verificationChecks.create({
                 to:`+91${number}`,
-                code:otp
+                code:otpData
             }).then((res)=>{
-                console.log(res);
+                console.log('asdlkj',res);
                 if(res.status === 'approved'){
-                    resolve(response=true)
+                    resolve(res)
                 }else{
                     reject(response=false)
                 }
             })
+            console.log('hjk');
         })
+    }
+   const otpVerifys = (req,res)=>{
+    console.log('asd',req.body);
+        let response
+       
+            client.verify.services(servicesId).verificationChecks.create({
+                to:`+91${req.body.number}`,
+                code:req.body.otp
+            }).then((resp)=>{
+                console.log('asdlkj',resp);
+                if(resp.status === 'approved'){
+                   res.send(true)
+                }else{
+                    res.send(false)
+                }
+            })
+            console.log('hjk');
+        
     }
     module.exports =  {
         doSms,
-        otpVerify
+        otpVerify,otpVerifys
 
 }

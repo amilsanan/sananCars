@@ -2,6 +2,14 @@ const UserCredential = require("../model/userCredentialModel");
 const jwt  = require('jsonwebtoken')
 const bcryptjs = require('bcryptjs');
 const { otpVerify } = require("../verify/otp");
+const jwt = require('jsonwebtoken')
+
+
+const generateToken=(id)=>{
+    return jwt.sign({id},process.env.jwt_secret,{
+        expiresIn:  '30d',
+    })
+}
 
 const usersignUp = async (req, res) => {
     console.log('kkkk',req.body);
@@ -10,7 +18,7 @@ const usersignUp = async (req, res) => {
     // const validPassword = await bcryptjs.compare('kk',req.body.password);
     // console.log('valis=',validPassword);
         otpVerify(req.body.otp,req.body.phone).then(async(resp)=>{
-            console.log('sdd===>>',res);
+            console.log('sdd===>>',resp);
             if (resp){
                 console.log('res is true')
                 const newUser = new UserCredential({
@@ -30,7 +38,7 @@ const usersignUp = async (req, res) => {
         })
 
     
-
+        
 
     // try {
     //     if(!username&&!fname&&!email){
