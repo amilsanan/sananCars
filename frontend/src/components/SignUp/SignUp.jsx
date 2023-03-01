@@ -13,16 +13,23 @@ function SignUp() {
   const [isVisibleotp, setIsVisibleotp] = useState(true);
 
  
-  const [inputOtp, setInputOtp] = useState("");
+  const [phoneno, setPhoneno] = useState("");
 
   const handleChange = (event) => {
-    setInputOtp(event.target.value);
+    setPhoneno(event.target.value);
   }
   const otp = (number)=>{
-    let num={number:inputOtp}   
-    setIsVisible(true)
-    setIsVisibleotp(false)
-   axios.post('http://localhost:5000/otp',num).then((res)=>console.log(res))
+    let num={number:phoneno}   
+    axios.post('http://localhost:5000/numExist',num).then((res)=>{console.log(res)
+    console.log(res.data);
+    if(res.data==true){
+      alert('number exists')
+    } else{
+      setIsVisible(true)
+      setIsVisibleotp(false)
+      //  axios.post('http://localhost:5000/otp',num).then((res)=>console.log(res))      
+    }  
+  })
   }
   const onSubmit =async (data) => { 
     const detail = data  
@@ -58,17 +65,7 @@ function SignUp() {
         <div className="js-sign-up-form">
           <div className="je2-sign-up-dialog__content">
             <div className="je2-sign-up-dialog__content__first-step js-first-step _visible">
-              {/* <a className="je2-button ">
-                <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-                  <g clipPath="url(#clip0_201_8131)">
-                    <path d="M19.9997 10.2297C19.9997 9.54995 19.9434 8.8665 19.8235 8.19775H10.2002V12.0486H15.711C15.4823 13.2905 14.7475 14.3892 13.6716 15.0873V17.586H16.9593C18.89 15.8443 19.9997 13.2722 19.9997 10.2297Z" fill="#4285F4" />
-                    <path d="M10.2002 20C12.9518 20 15.2723 19.1145 16.963 17.5859L13.6753 15.0873C12.7606 15.6973 11.5797 16.0427 10.2039 16.0427C7.54224 16.0427 5.28545 14.2826 4.4757 11.9163H1.08301V14.492C2.81497 17.8689 6.34262 20 10.2002 20Z" fill="#34A853" />
-                    <path d="M4.47227 11.9163C4.04491 10.6743 4.04491 9.32947 4.47227 8.0875V5.51172H1.08333C-0.363715 8.33737 -0.363715 11.6664 1.08333 14.4921L4.47227 11.9163Z" fill="#FBBC04" />
-                    <path d="M10.2002 3.95732C11.6547 3.93527 13.0605 4.47174 14.1139 5.45649L17.0268 2.60145C15.1824 0.903855 12.7344 -0.0294541 10.2002 -5.85336e-05C6.34261 -5.85336e-05 2.81497 2.13112 1.08301 5.51161L4.47195 8.08739C5.27795 5.71738 7.53849 3.95732 10.2002 3.95732Z" fill="#EA4335" />
-                  </g>                
-                </svg>
-                <span>Continue with Google</span>
-              </a> */}
+             
             
               <div className="je2-sign-up-dialog__content__separator">
                 <span>or</span>
@@ -87,7 +84,7 @@ function SignUp() {
                   </div>
                 </div>
                 <div className="je2-sign-up-dialog__content-form__field">
-                  <input {...register("phone")} value={inputOtp} onChange={handleChange} className="je2-input" type="number" placeholder="Phone" name="phone" required />
+                  <input {...register("phone")} onChange={handleChange} className="je2-input" type="number" placeholder="Phone" name="phone" required />
                   <div className="js-error-message _hidden">
                   </div>
                 </div> 

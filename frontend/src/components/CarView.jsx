@@ -1,6 +1,15 @@
 import React from "react";
+import StripeCheckout from 'react-stripe-checkout'
 
 function CarView() {
+  function onToken(data){
+    console.log('vbn',data);
+    let checkoutData = {
+      token : data
+
+    }
+    console.log('jkl',checkoutData);
+  }
   return (
     <div>
       <div className="cars show" id="view">
@@ -468,6 +477,12 @@ function CarView() {
                     <div className="je2-listing-specs__item">
                       <p>petrol</p>
                       <span>engine</span>
+                    </div>
+                    <div className="je2-listing-info__price" >
+                    <StripeCheckout token={onToken} amount={100} currency='INR' stripeKey="pk_test_51Mg69KSCKTDw8Te2ZcDATxGK2CzkuTztyNVT6VVAAx8wjWvMvVjsRZpvhgOPiMPy6YIpybEUx3Tl2B75DRVMPmPd00Z8HnRmco" >
+                    <button>Book Now</button></StripeCheckout>
+                      {/* <p>petrol</p>
+                      <span>engine</span> */}
                     </div>
                   </div>
                 </div>

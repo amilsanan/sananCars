@@ -9,7 +9,8 @@ const userCredential = mongoose.Schema({
     createdAt:{
         type: Date,
         default: new Date(),
-    }
+    },
+    isBlocked:{type:Boolean, default:false}
 })
 
 const UserCredential = mongoose.model('User', userCredential);

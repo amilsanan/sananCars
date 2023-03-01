@@ -2,7 +2,7 @@ const UserCredential = require("../model/userCredentialModel");
 const jwt  = require('jsonwebtoken')
 const bcryptjs = require('bcryptjs');
 const { otpVerify } = require("../verify/otp");
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')  
 
 
 const generateToken=(id)=>{
@@ -28,7 +28,9 @@ const usersignUp = async (req, res) => {
                     phone
                 })
                 await newUser.save();
-                res.json({ status: "success" });
+
+              let t= generateToken(newUser.id)
+                res.json({ status: "success" },j);
 
             }
             else{
@@ -82,7 +84,9 @@ const userlogin = async (req, res) => {
                 // },
                 // 'secret123'
                 // )
-                res.status(201).json({status:true});
+                res.status(201).json({status:true,
+                token:generateToken(user._id)
+                });
             } else {
                 res.json({status:false})
                 console.log("Password Wrong");

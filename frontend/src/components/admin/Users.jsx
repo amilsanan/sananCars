@@ -7,14 +7,22 @@ function Users() {
   const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
   const [datas, SetDatas] = useState([])
+
+    const getInformations=async ()=>{
+      const  respo = await axios.get("http://localhost:5000/admin/getUsers")
+      console.log('eeee',respo);
+      SetDatas(respo.data)
+    }
   useEffect(() => {
-    axios.get("http://localhost:5000/admin/getUsers").then(async (res) => {
-      await SetDatas(res.data)
-      console.log('====....', datas);
-    })
+    getInformations()
+     
   }, [])
-  const handleButtonClick=(id)=>{
+
+  const handleButtonBlock = async (id)=>{
     console.log('button clicked',id);
+    const  respo = await axios.post("http://localhost:5000/admin/block",{id:id})
+      console.log('eeee',respo);
+    
   }
   const columns = [
     {
@@ -35,32 +43,32 @@ function Users() {
     },
     {
       name:'block',
-      cell: (row) => <button onClick={handleButtonClick(row._id)}>Action</button>,
+      cell: (row) => <button onClick={()=>handleButtonBlock(row._id)}>{row.isBlocked ? "UnBlock" : "Block"}</button>
       
-      button: true,
     },
 
   ];
 
-  const data = datas.map((item, index) => {
-    
-    return {
-      id: 1,
-      _id: item._id,
-      email: item.email,
-      phone: item.phone,
-      createdAt: item.createdAt,
+  // const data = datas.map((item, index) => {    
+  //   return {      
+  //     id: 1,
+  //     // index:index+1,
+  //     _id: item._id,
+  //     email: item.email,
+  //     phone: item.phone,
+  //     createdAt: item.createdAt,
 
-    }
-  })
+  //   }
+  // })
   return (
     <Container maxWidth="xl">
       <DataTable
         title="Car Companies"
         columns={columns}
-        data={data}
+        data={datas}
         selectableRows
-        expandableRowsComponent={ExpandedComponent}
+        
+        // expandableRowsComponent={ExpandedComponent}
         pagination
       /></Container>
   );

@@ -9,6 +9,28 @@ const getAllUsers = async (req, res) => {
 
     }
 }
+const blockControl = async (req, res) => {
+    console.log('req==',req.body);
+    const users = await UserCredential.updateOne({_id:req.body.id},{$set:{ isBlocked: true }});
+        console.log(users);
+   
+}
+const numberExist = async (req, res) => {
+    // console.log(req.body);
+//    const a=await UserCredential.updateMany({}, {$set:{ isBlocked: false }} ).then((res)=>console.log(res))
+    console.log(req.body.number);
+    try {
+        const users = await UserCredential.find({phone:req.body.number});
+        console.log(users);
+       if (Array.isArray(users) && users.length === 0) {
+            res.send(false)
+            } else {
+            res.send(true)}
+    } catch (error) {
+        console.log(error.message);
+
+    }
+}
 
 const updatePassword = async (req, res) => {
     console.log("Hi", req.body)
@@ -74,5 +96,5 @@ module.exports = {
     getAllUsers,
     deleteUser,
     getUserDetails,
-    getEditProfile,updatePassword
+    getEditProfile,updatePassword,numberExist,blockControl
 }

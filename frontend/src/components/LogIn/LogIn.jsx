@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { GoogleLogin } from '@react-oauth/google';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+const { localStorage } = window;
 
 function LogIn() {
   const { register, formState: { errors }, handleSubmit } = useForm()
@@ -18,7 +19,9 @@ function LogIn() {
     console.log(data);
     axios.post('http://localhost:5000/login', data).then((res) => {
       console.log('response here', res.data);
+      localStorage.setItem('jwtToken', res.data.token);
       if (res.data.status) {
+
         navigate('/')
       } else {
         alert('wrong password')
@@ -31,25 +34,25 @@ function LogIn() {
     console.log('lkkl',codeResponse);},
     onError: (error) => console.log('Login Failed:', error)
 });
-useEffect(
-  () => {
-      if (user) {
-          axios
-              .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                  headers: {
-                      Authorization: `Bearer ${user.access_token}`,
-                      Accept: 'application/json'
-                  }
-              })
-              .then((res) => {
-                  console.log('poo',res);
-                  navigate('/')
-              })
-              .catch((err) => console.log(err));
-      }
-  },
-  [ user ]
-);
+// useEffect(
+//   () => {
+//       if (user) {
+//           axios
+//               .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+//                   headers: {
+//                       Authorization: `Bearer ${user.access_token}`,
+//                       Accept: 'application/json'
+//                   }
+//               })
+//               .then((res) => {
+//                   console.log('poo',res);
+//                   navigate('/')
+//               })
+//               .catch((err) => console.log(err));
+//       }
+//   },
+//   [ user ]
+// );
 
 
   return (
