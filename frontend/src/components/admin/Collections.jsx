@@ -12,10 +12,21 @@ function Collections() {
              console.log('====....',datas);
         })
     },[])
+    const handleButtonEdit = async (id)=>{
+    console.log('button clicked',id);
+   
+      
+  }
+    const handleButtonDelete = async (id)=>{
+    console.log('button clicked',id);
+   
+      
+  }
+    
 const columns = [
     {
         name: 'id',
-        selector: row => row.id,
+        selector: row => row._id,
     },
     {
         name: 'Name',
@@ -50,29 +61,39 @@ const columns = [
         name: 'image',
         selector: row =><img width={50} height={50} src={row.image}  alt="jk" />
     },
+    {
+      name:'edit',
+      cell: (row) => <div><button onClick={()=>handleButtonEdit(row._id)}>Edit</button>
+      <button onClick={()=>handleButtonDelete(row._id)}>Delete</button></div>
+      
+    }, 
+    {
+      name:'delete',
+      
+    },
 ];
 
-const data =datas.map((item,index)=>{
-    console.log('kljhgd',item.imagename,);
-    const t ='/images/company/'+item.imagename
-  return  {
-        id: item._id,
-        name: item.name,
-        brand: item.brand,
-        price: item.price,
-        year: item.year,
-        kms: item.kms,
-        fuel: item.fuel,
-        regNo: item.regNo,               
-        image:t
-    }
-}) 
+// const data =datas.map((item,index)=>{
+//     console.log('kljhgd',item.imagename,);
+//     const t ='/images/company/'+item.imagename
+//   return  {
+//         id: item._id,
+//         name: item.name,
+//         brand: item.brand,
+//         price: item.price,
+//         year: item.year,
+//         kms: item.kms,
+//         fuel: item.fuel,
+//         regNo: item.regNo,               
+//         image:t
+//     }
+// }) 
   return (
     <Container maxWidth="xl">
     <DataTable
         title="Car Collections"
         columns={columns}
-        data={data}
+        data={datas}
         selectableRows
         expandableRowsComponent={ExpandedComponent}
         pagination

@@ -7,22 +7,31 @@ function Users() {
   const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
   const [datas, SetDatas] = useState([])
+  const [info, setInfo] = useState(0)
 
     const getInformations=async ()=>{
-      const  respo = await axios.get("http://localhost:5000/admin/getUsers")
+     let  respo = await axios.get("http://localhost:5000/admin/getUsers")
       console.log('eeee',respo);
-      SetDatas(respo.data)
+      await SetDatas(respo.data)
+      console.log('lkjhgffdasd',datas);
     }
-  useEffect(() => {
-    getInformations()
-     
+    //
+  useEffect( () => {
+     getInformations() 
+   
   }, [])
+
 
   const handleButtonBlock = async (id)=>{
     console.log('button clicked',id);
-    const  respo = await axios.post("http://localhost:5000/admin/block",{id:id})
-      console.log('eeee',respo);
-    
+    const  respo = await axios.post("http://localhost:5000/admin/block",{id:id}).then(async(res)=>{
+      console.log('1223',res);
+      
+     let  responsee = await axios.get("http://localhost:5000/admin/getUsers")
+      console.log('data gfetched',responsee.data);
+       SetDatas(responsee.data)
+    })
+      
   }
   const columns = [
     {
@@ -49,7 +58,7 @@ function Users() {
 
   ];
 
-  // const data = datas.map((item, index) => {    
+  // let data = datas.map((item, index) => {    
   //   return {      
   //     id: 1,
   //     // index:index+1,
@@ -57,6 +66,7 @@ function Users() {
   //     email: item.email,
   //     phone: item.phone,
   //     createdAt: item.createdAt,
+  //     block:item.
 
   //   }
   // })

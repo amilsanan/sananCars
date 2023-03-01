@@ -18,19 +18,30 @@ function Addcompany() {
     }    
     const formRef = useRef(null);
   const onSubmit = async(data) => {  
-    console.log('datak');   
-    var formData = new FormData();
-        
-        formData.append("file", data.file[0]);
-        formData.append("name", data.name);
+    // var formData = new FormData();
+    
+    //     formData.append("file", data.file[0]);
+    //     formData.append("name", data.name);
+    
+    console.log('datak',data);   
 
-        const res = await fetch("http://localhost:5000/admin/addCompanies", {
-            method: "POST",
-            body: formData,
-        }).then((res) => {
-          // formData.delete()
-          alert('company addded');
-        })  
+        const cloud = new FormData();
+      cloud.append("file", data.file[0])
+      cloud.append("upload_preset", "md8gayt3");
+      var { data } = await axios.post(
+        `https://api.cloudinary.com/v1_1/ds95de0tj/image/upload`, cloud
+      );
+      let url = data.secure_url;
+      console.log(url);
+
+
+        // const res = await fetch("http://localhost:5000/admin/addCompanies", {
+        //     method: "POST",
+        //     body: formData,
+        // }).then((res) => {
+        //   // formData.delete()
+        //   alert('company addded');
+        // })  
 }
 //////////////////////////////////////////////////////////////////////////
   return (

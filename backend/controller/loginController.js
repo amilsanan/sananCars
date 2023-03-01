@@ -71,28 +71,36 @@ const userlogin = async (req, res) => {
      console.log('psaa',password);
     try {
         const user = await UserCredential.findOne({ email: email });
-        console.log("server", user.password);
-        if (user) {
-            console.log('hi');
-            const validPassword = await bcryptjs.compare(password,user.password);
-             console.log('valis=',validPassword);
-            if (validPassword) {
-                console.log("Correct Password",user);
-                // const token = jwt.sign({
-                //     id: user._id,
-                //     email: user.email
-                // },
-                // 'secret123'
-                // )
-                res.status(201).json({status:true,
-                token:generateToken(user._id)
-                });
+        console.log(user);
+        if(user.isBlocked){
+            console.log('456');
+            res.json({status:'blocked'})
+        }
+        else{
+
+            console.log("server", user.password);
+            if (user) {
+                console.log('hi');
+                const validPassword = await bcryptjs.compare(password,user.password);
+                 console.log('valis=',validPassword);
+                if (validPassword) {
+                    console.log("Correct Password",user);
+                    // const token = jwt.sign({
+                    //     id: user._id,
+                    //     email: user.email
+                    // },
+                    // 'secret123'
+                    // )
+                    res.status(201).json({status:true,
+                    token:generateToken(user._id)
+                    });
+                } else {
+                    res.json({status:false})
+                    console.log("Password Wrong");
+                }
             } else {
-                res.json({status:false})
-                console.log("Password Wrong");
+                console.log("Invalid Details");
             }
-        } else {
-            console.log("Invalid Details");
         }
     } catch (error) {
         res.status(409).json({ message: error.message });

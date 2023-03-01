@@ -19,12 +19,17 @@ function LogIn() {
     console.log(data);
     axios.post('http://localhost:5000/login', data).then((res) => {
       console.log('response here', res.data);
-      localStorage.setItem('jwtToken', res.data.token);
-      if (res.data.status) {
+      if(res.data.status=='blocked'){
+        alert('user blocked')
+      }else{
 
-        navigate('/')
-      } else {
-        alert('wrong password')
+        localStorage.setItem('jwtToken', res.data.token);
+        if (res.data.status) {
+  
+          navigate('/')
+        } else {
+          alert('wrong password')
+        }
       }
     })
   };

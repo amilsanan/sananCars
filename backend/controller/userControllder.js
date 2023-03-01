@@ -11,8 +11,9 @@ const getAllUsers = async (req, res) => {
 }
 const blockControl = async (req, res) => {
     console.log('req==',req.body);
-    const users = await UserCredential.updateOne({_id:req.body.id},{$set:{ isBlocked: true }});
+    const users = await UserCredential.updateOne({_id:req.body.id},[{ "$set": { "isBlocked": { "$eq": [false, "$isBlocked"] } } }]);
         console.log(users);
+        res.send(true)
    
 }
 const numberExist = async (req, res) => {
